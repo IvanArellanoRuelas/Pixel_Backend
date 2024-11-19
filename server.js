@@ -41,3 +41,5 @@ app.use("/api/carrito", carritoRoutes);
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+module.exports = app;
