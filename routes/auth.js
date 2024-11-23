@@ -3,15 +3,17 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { Pool } = require("pg");
 const router = express.Router();
+require("dotenv").config();
 //const authenticateToken = require("../middleware");
 
+// Configura la conexión a la base de datos
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "Pixel",
-  password: "Lula2024",
+  user: process.env.DATABASE_USER,
+  host: process.env.DATABASE_HOST,
+  database: process.env.DATABASE_NAME,
+  password: process.env.DATABASE_PASSWORD,
   allowExitOnIdle: true,
-  port: 5432,
+  port: parseInt(process.env.DATABASE_PORT, 10), // Parsear a entero
 });
 
 // Genera un token JWT

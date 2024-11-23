@@ -1,0 +1,28 @@
+# Ignora archivos generados por Node.js
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Ignora archivos temporales
+*.log
+*.tmp
+*.bak
+Thumbs.db
+
+# Ignora archivos de cache
+.cache/
+.DS_Store
+
+# Ignora archivos de configuración
+config.json  //Si tienes un archivo config.json con credenciales, ¡NO lo subas a GitHub!
+.env         //Fundamental incluir .env para no subir tus credenciales.
+.env.*       //Para cubrir posibles variaciones como .env.local
+
+# Ignora la carpeta de base de datos, si la tienes
+database/
+
+# Si usas un IDE, añade patrones relacionados
+*.suo
+*.ntvs*
+*.csproj.user
+*.pid

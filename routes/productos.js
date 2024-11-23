@@ -1,15 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const { Pool } = require("pg");
+require("dotenv").config();
 
-// Configura el pool de conexión (puedes mover esto a un archivo separado si lo prefieres)
+// Configura la conexión a la base de datos
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "Pixel",
-  password: "Lula2024",
+  user: process.env.DATABASE_USER,
+  host: process.env.DATABASE_HOST,
+  database: process.env.DATABASE_NAME,
+  password: process.env.DATABASE_PASSWORD,
   allowExitOnIdle: true,
-  port: 5432,
+  port: parseInt(process.env.DATABASE_PORT, 10), // Parsear a entero
 });
 
 // Ruta para obtener datos de la tabla productos
