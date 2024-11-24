@@ -14,7 +14,7 @@ Thumbs.db
 .DS_Store
 
 # Ignora archivos de configuración
-config.json  //Si tienes un archivo config.json con credenciales, ¡NO lo subas a GitHub!
+config.json  //Si tienes un archivo config.json con credenciales.
 .env         //Fundamental incluir .env para no subir tus credenciales.
 .env.*       //Para cubrir posibles variaciones como .env.local
 
