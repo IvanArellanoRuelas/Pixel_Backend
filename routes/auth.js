@@ -43,19 +43,35 @@ router.post("/login", async (req, res) => {
 // Ruta para registrar un nuevo usuario (opcional)
 router.post("/register", async (req, res) => {
   const { nombre, email, contraseña } = req.body;
+
   try {
-    const hashedPassword = bcrypt.hashSync(contraseña, 8);
-    const result = await pool.query(
-      "INSERT INTO usuarios(nombre, email, contraseña,user_type) VALUES($1, $2, $3,$4) RETURNING *",
+    // Verifica si el email ya existe (para evitar duplicados)
+    const existingUser = await pool.query(
+      "SELECT * FROM usuarios WHERE email = $1",
+      [email]
+    );
+    if (existingUser.rows.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "El correo electrónico ya está registrado" });
+    }
+
+    // Hashea la contraseña antes de guardarla en la base de datos
+    const hashedPassword = await bcrypt.hash(contraseña, 10); // Usa bcrypt.hash (async)
+
+    // Inserta el nuevo usuario en la base de datos
+    const newUser = await pool.query(
+      "INSERT INTO usuarios (nombre, email, contraseña, user_type) VALUES ($1, $2, $3, $4) RETURNING *",
       [nombre, email, hashedPassword, "User"]
     );
-    const user = result.rows[0];
 
-    const token = generateToken(user);
-    res.status(201).json({ token });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error al registrar el usuario");
+    // Genera el token JWT
+    const token = generateToken(newUser.rows[0]);
+
+    res.status(201).json({ message: "Usuario registrado con éxito", token });
+  } catch (error) {
+    console.error("Error al registrar usuario:", error);
+    res.status(500).json({ message: "Error del servidor" });
   }
 });
 
